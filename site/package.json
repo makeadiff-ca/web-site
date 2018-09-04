@@ -1,0 +1,54 @@
+{
+  "name": "make-a-diff-web-site",
+  "description": "The main web site for make a diff.",
+  "version": "1.0.0",
+  "author": "Paul Coyle <paul@paulcoyle.com>",
+  "dependencies": {
+    "caniuse-db": "^1.0.30000877",
+    "gatsby": "^1.9.277",
+    "gatsby-link": "^1.6.46",
+    "gatsby-plugin-react-helmet": "^2.0.11",
+    "gatsby-plugin-robots-txt": "1.2.0",
+    "gatsby-plugin-sitemap": "^1.2.25",
+    "gatsby-plugin-styled-components": "^2.0.11",
+    "gatsby-plugin-typescript": "^1.4.20",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0",
+    "styled-components": "^3.3.3",
+    "validate.js": "^0.12.0",
+    "whatwg-fetch": "^2.0.4"
+  },
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write 'src/**/*'",
+    "svgs": "svgr --ref --ext tsx --template src/assets/templates/svg-ts-react-template.js --out-dir src/components/vectors src/assets/svg",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@svgr/cli": "^2.1.1",
+    "@types/isomorphic-fetch": "^0.0.34",
+    "@types/node": "^10.5.4",
+    "@types/react": "^16.4.7",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-helmet": "^5.0.6",
+    "@types/react-redux": "^6.0.6",
+    "@types/redux": "^3.6.0",
+    "babel-plugin-styled-components": "^1.5.1",
+    "prettier": "^1.13.7",
+    "tslint": "^5.11.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^2.9.2"
+  },
+  "repository": {
+    "type": "git"
+  }
+}
