@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import CenteredHeader from '../components/centered-header'
 
 interface Props {
   className?: string
@@ -13,7 +12,6 @@ class NotFoundPage extends React.PureComponent<Props, {}> {
     return (
       <div className={className}>
         <h1>Not Found</h1>
-        <CenteredHeader>Not Found</CenteredHeader>
       </div>
     )
   }

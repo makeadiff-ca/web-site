@@ -1,12 +1,16 @@
 import React from 'react'
+import { Dispatch } from 'redux'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { AppState } from '../state'
+import * as ContactState from '../state/contact'
 import ContentArea from '../components/content-area'
 import { mediaMinWidth, palette } from '../styling'
-import ContactForm from '../components/contact-form'
+import ContactForm, { Form } from '../components/contact-form'
 import HeroDiff from '../components/hero-diff'
 import HeroBaseBreaker from '../components/vectors/HeroBaseBreaker'
 
-interface Props {
+interface MainProps {
   className?: string
   data: {
     site: {
@@ -17,9 +21,24 @@ interface Props {
   }
 }
 
-class IndexPage extends React.PureComponent<Props, { testTime: number }> {
+interface StateProps {
+  interests: ContactState.ContactInterest[]
+  submitState: ContactState.SubmitState
+}
+
+interface DispatchProps {
+  contactSubmit(form: Form): void
+}
+
+interface Props extends MainProps, StateProps, DispatchProps {}
+
+class IndexPage extends React.PureComponent<Props> {
+  handleFormSubmit = (form: Form) => {
+    this.props.contactSubmit(form)
+  }
+
   render() {
-    const { className } = this.props
+    const { className, interests, submitState } = this.props
 
     return (
       <div className={className}>
@@ -39,11 +58,9 @@ class IndexPage extends React.PureComponent<Props, { testTime: number }> {
               </p>
             </div>
             <ContactForm
-              interests={[
-                { id: 1, label: 'Software Development' },
-                { id: 2, label: 'Software Project Management' },
-              ]}
-              onSubmit={f => console.log('contact form', f)}
+              interests={interests}
+              onSubmit={this.handleFormSubmit}
+              submitState={submitState}
             />
           </ContentArea>
         </div>
@@ -57,7 +74,30 @@ class IndexPage extends React.PureComponent<Props, { testTime: number }> {
   }
 }
 
-export default styled(IndexPage)`
+function mapStateToProps(state: AppState): StateProps {
+  return { ...state.contact }
+}
+
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+  return {
+    contactSubmit(form) {
+      dispatch(
+        ContactState.actions.contactSubmit(
+          form.name,
+          form.email,
+          form.interests,
+        ),
+      )
+    },
+  }
+}
+
+const ConnectedIndexPage = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(IndexPage)
+
+export default styled(ConnectedIndexPage)`
   > .page-head {
     position: relative;
     background-color: ${palette.base};

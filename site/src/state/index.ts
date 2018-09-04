@@ -16,6 +16,6 @@ export const reducers = {
 }
 
 export const sagas: { [key: string]: () => IterableIterator<any> } = {
-  ...ContactState.reducer,
+  ...ContactState.sagas,
   ...InitState.sagas,
 }

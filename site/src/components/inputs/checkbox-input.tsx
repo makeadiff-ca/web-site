@@ -4,6 +4,7 @@ import { mediaMinWidth, palette } from '../../styling'
 
 interface Props {
   className?: string
+  disabled?: boolean
   label: string
   value: number
   checked: boolean
@@ -34,17 +35,18 @@ class CheckboxInput extends React.PureComponent<Props> {
   }
 
   render() {
-    const { className, checked, label, value } = this.props
+    const { className, checked, disabled, label, value } = this.props
 
     return (
       <div
         className={className}
-        tabIndex={0}
+        tabIndex={disabled ? -1 : 0}
         onKeyDown={this.handleKeyDown}
         onFocus={this.handleFocus}
       >
         <label className="checkbox-label-wrapper" tabIndex={-1}>
           <input
+            disabled={disabled}
             type="checkbox"
             value={value}
             onChange={this.handleChange}

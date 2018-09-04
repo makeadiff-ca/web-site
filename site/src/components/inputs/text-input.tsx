@@ -4,6 +4,7 @@ import { classNames, mediaMinWidth, palette } from '../../styling'
 
 interface Props {
   className?: string
+  disabled?: boolean
   hasErrors?: boolean
   onChange(value: string): void
   value: string
@@ -14,11 +15,16 @@ class TextInput extends React.PureComponent<Props> {
     this.props.onChange(e.currentTarget.value)
 
   render() {
-    const { className: propsClassName, hasErrors, value } = this.props
+    const { className: propsClassName, disabled, hasErrors, value } = this.props
     const className = classNames({ 'has-errors': !!hasErrors }, propsClassName)
 
     return (
-      <input className={className} value={value} onChange={this.handleChange} />
+      <input
+        className={className}
+        disabled={disabled}
+        value={value}
+        onChange={this.handleChange}
+      />
     )
   }
 }

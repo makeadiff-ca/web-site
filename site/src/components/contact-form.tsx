@@ -1,18 +1,14 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { validate } from 'validate.js'
+import { SubmitState, ContactInterest } from '../state/contact'
 import Button from '../components/inputs/button'
 import CheckboxInput from '../components/inputs/checkbox-input'
 import TextInput from '../components/inputs/text-input'
 import CalloutCirclePlus from '../components/vectors/CalloutCirclePlus'
-import { mediaMinWidth, palette } from '../styling'
+import { mediaMinWidth, palette, classNames } from '../styling'
 
-interface Interest {
-  id: number
-  label: string
-}
-
-interface Form {
+export interface Form {
   email: string
   interests: number[]
   name: string
@@ -20,8 +16,9 @@ interface Form {
 
 interface Props {
   className?: string
-  interests: Interest[]
+  interests: ContactInterest[]
   onSubmit(form: Form): void
+  submitState: SubmitState
 }
 
 interface State {
@@ -111,11 +108,22 @@ class ContactForm extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { className, interests } = this.props
+    const { className: propsClassName, interests, submitState } = this.props
     const { canSubmit, name, email, interests: selectedInterests } = this.state
     const nameHasErrors = this.shouldShowFieldErrors('name')
     const emailHasErrors = this.shouldShowFieldErrors('email')
-    const interestsHasErrors = this.shouldShowFieldErrors('interests')
+    const submitPending = submitState === SubmitState.Pending
+    const submitFailed = submitState === SubmitState.Failed
+    const submitComplete = submitState === SubmitState.Submitted
+
+    const className = classNames(
+      {
+        'submit-pending': submitPending,
+        'submit-failed': submitFailed,
+        'submit-complete': submitComplete,
+      },
+      propsClassName,
+    )
 
     return (
       <div className={className}>
@@ -132,6 +140,7 @@ class ContactForm extends React.PureComponent<Props, State> {
           <div className="form">
             <label>Your Name *</label>
             <TextInput
+              disabled={submitPending || submitComplete}
               value={name}
               hasErrors={nameHasErrors}
               onChange={this.handleNameChange}
@@ -139,6 +148,7 @@ class ContactForm extends React.PureComponent<Props, State> {
 
             <label>Your Email *</label>
             <TextInput
+              disabled={submitPending || submitComplete}
               value={email}
               hasErrors={emailHasErrors}
               onChange={this.handleEmailChange}
@@ -147,9 +157,10 @@ class ContactForm extends React.PureComponent<Props, State> {
             <label>Your Specialties & Interests (≥1)</label>
             {interests.map(i => (
               <CheckboxInput
+                disabled={submitPending || submitComplete}
                 key={i.id}
                 value={i.id}
-                label={i.label}
+                label={i.value}
                 checked={selectedInterests.includes(i.id)}
                 onSelect={this.handleSelectInterest}
                 onDeselect={this.handleDeselectInterest}
@@ -159,10 +170,12 @@ class ContactForm extends React.PureComponent<Props, State> {
             <div className="controls">
               <Button
                 label="Make Contact"
-                disabled={!canSubmit}
+                disabled={!canSubmit || submitPending || submitComplete}
                 onClick={this.handleFormSubmitClick}
               />
             </div>
+            <div className="form-overlay" />
+            <div className="form-thanks">Thanks for your interest!</div>
           </div>
         </div>
       </div>
@@ -214,6 +227,8 @@ export default styled(ContactForm)`
     }
 
     .form {
+      position: relative;
+
       > label {
         color: ${palette.dark};
         display: block;
@@ -224,10 +239,54 @@ export default styled(ContactForm)`
         margin-top: 2em;
         text-align: right;
       }
+
+      .form-overlay {
+        background-color: ${palette.foreStandard};
+        bottom: -0.2em;
+        left: -0.2em;
+        opacity: 0;
+        position: absolute;
+        right: -0.2em;
+        top: 0;
+        transition: opacity 0.1s ease-in-out, visibility: 0.1s linear;
+        visibility: hidden;
+      }
+
+      .form-thanks {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, 0%);
+        transition: transform 0.2s ease-out, opacity 0.2s ease-out, visibility 0.2s linear;
+      }
     }
 
     ${TextInput} {
       margin-bottom: 1em;
+    }
+  }
+
+  &.submit-pending {
+    > .content .form .form-overlay {
+      opacity: 0.5;
+      visibility: visible
+    }
+  }
+
+  &.submit-complete {
+    > .content .form {
+      .form-overlay {
+        opacity: 1;
+        visibility: visible
+      }
+
+      .form-thanks {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%);
+      }
     }
   }
 

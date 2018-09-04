@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# This is meant to be run in development to test the docker builds.  It is
+# expected that a user-defined bridge network named 'makeadiff-net' exists. 
+# Create it with:
+#     docker network create makeadiff-net
+
+docker run \
+  -d \
+  --name makeadiff-db \
+  --network makeadiff-net \
+  -p 5432:5432 \
+  -e POSTGRES_USER=mad \
+  -e POSTGRES_PASSWORD=devonly \
+  postgres:10-alpine

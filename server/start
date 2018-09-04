@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -ux
+
+export NODE_ENV=production
+
+node ./dist/scripts/migrate.js
+exec node ./dist/server.js
