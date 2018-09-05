@@ -1,7 +1,7 @@
 {
   "include": ["./src/**/*", "./types/**/*"],
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "module": "commonjs",
     "lib": ["dom", "es2017"],
     "jsx": "react",
