@@ -3,7 +3,7 @@ import { AppState } from '..'
 import * as InitState from '../init'
 import * as api from '../../api'
 
-export const enum ActionType {
+export enum ActionType {
   ContactInterestsFetch = 'CONTACT/INTERESTS/FETCH',
   ContactInterestsFetchSuccess = 'CONTACT/INTERESTS/FETCH/SUCCESS',
   ContactInterestsFetchFailure = 'CONTACT/INTERESTS/FETCH/FAILURE',
@@ -33,7 +33,7 @@ export interface ContactInterest {
   value: string
 }
 
-export const enum SubmitState {
+export enum SubmitState {
   Unsubmitted = 'unsubmitted',
   Pending = 'pending',
   Failed = 'failed',

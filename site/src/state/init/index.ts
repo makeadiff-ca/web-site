@@ -1,4 +1,4 @@
-export const enum ActionType {
+export enum ActionType {
   Init = 'INIT',
 }
 

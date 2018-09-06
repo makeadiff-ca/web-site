@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
@@ -8,17 +8,11 @@ import ContentArea from '../components/content-area'
 import { mediaMinWidth, palette } from '../styling'
 import ContactForm, { Form } from '../components/contact-form'
 import HeroDiff from '../components/hero-diff'
+import Layout from '../components/layouts'
 import HeroBaseBreaker from '../components/vectors/HeroBaseBreaker'
 
 interface MainProps {
   className?: string
-  data: {
-    site: {
-      siteMetadata: {
-        title: string
-      }
-    }
-  }
 }
 
 interface StateProps {
@@ -28,11 +22,16 @@ interface StateProps {
 
 interface DispatchProps {
   contactSubmit(form: Form): void
+  fetchContactInterests(): void
 }
 
 interface Props extends MainProps, StateProps, DispatchProps {}
 
 class IndexPage extends React.PureComponent<Props> {
+  componentDidMount() {
+    this.props.fetchContactInterests()
+  }
+
   handleFormSubmit = (form: Form) => {
     this.props.contactSubmit(form)
   }
@@ -41,7 +40,7 @@ class IndexPage extends React.PureComponent<Props> {
     const { className, interests, submitState } = this.props
 
     return (
-      <div className={className}>
+      <Layout className={className}>
         <div className="page-head">
           <HeroBaseBreaker className="hero-base-break" />
           <ContentArea className="hero-area">
@@ -69,7 +68,7 @@ class IndexPage extends React.PureComponent<Props> {
             <ContentArea className="temp" />
           </section>
         </article>
-      </div>
+      </Layout>
     )
   }
 }
@@ -89,10 +88,18 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
         ),
       )
     },
+    fetchContactInterests() {
+      dispatch(ContactState.actions.interestsFetch())
+    },
   }
 }
 
-const ConnectedIndexPage = connect(
+const ConnectedIndexPage = connect<
+  StateProps,
+  DispatchProps,
+  MainProps,
+  AppState
+>(
   mapStateToProps,
   mapDispatchToProps,
 )(IndexPage)
@@ -193,14 +200,4 @@ export default styled(ConnectedIndexPage)`
       min-height: 15em;
     }
   `};
-`
-
-export const query = graphql`
-  query SplashSiteTitleQuery {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
 `

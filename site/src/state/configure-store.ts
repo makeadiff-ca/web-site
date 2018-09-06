@@ -15,6 +15,11 @@ export default function configureStore(): Store<AppState> {
     typeof window !== 'undefined' ? window : {}
   let storeComposeEnhancer
 
+  console.log(
+    Object.keys(process.env)
+      .map(k => `${k}=${process.env[k]}`)
+      .join(','),
+  )
   if (process.env['ACTIVE_ENV'] !== 'production') {
     storeComposeEnhancer =
       windowGlobal.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -43,8 +48,6 @@ export default function configureStore(): Store<AppState> {
   }
 
   Object.keys(sagas).forEach(k => sagaMiddleware.run(sagas[k]))
-
-  store.dispatch(InitState.actions.init())
 
   return store
 }
