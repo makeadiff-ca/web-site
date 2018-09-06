@@ -51,7 +51,7 @@ class IndexPage extends React.PureComponent<Props> {
               <HeroDiff label="make a diff" diffAdd />
               <p>
                 Make a Diff assists other non-profits and charities in Calgary
-                with software and IT solutions. Levaraging our members' skills
+                with software and IT solutions. Leveraging our members' skills
                 in software design, development, and deployment, we help make
                 more of a difference.
               </p>
