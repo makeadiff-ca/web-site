@@ -7,7 +7,6 @@ jobs:
     steps:
       - checkout
       - run: echo "noop"
-
   deploy:
     machine:
       enabled: true
@@ -20,3 +19,9 @@ jobs:
       - run:
           name: Deploy master to Dokku
           command: git push remote dokku@138.197.132.181
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy
