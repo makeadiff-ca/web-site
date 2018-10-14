@@ -6,4 +6,17 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: echo "should see on CircleCI console"
+      - run: echo "noop"
+
+  deploy:
+    machine:
+      enabled: true
+    working_directory: ~/repo
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "c1:03:23:fe:18:de:55:2c:80:49:10:ed:58:73:cb:00"
+      - checkout
+      - run:
+          name: Deploy master to Dokku
+          command: git push remote dokku@138.197.132.181
