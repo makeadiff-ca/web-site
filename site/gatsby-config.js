@@ -9,5 +9,13 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-robots-txt',
     { resolve: 'gatsby-plugin-sitemap' },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `src`,
+        path: `${__dirname}/src/`,
+      },
+    },
+    `gatsby-transformer-remark`,
   ],
 }
