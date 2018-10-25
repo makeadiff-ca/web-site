@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'gatsby';
 import styled from 'styled-components'
 import Helmet from 'react-helmet'
 import Footer from '../footer'
@@ -25,6 +26,9 @@ class Layout extends React.PureComponent<Props> {
             },
           ]}
         />
+        <div>
+          <Link to="/news">News</Link>
+        </div>
         {children}
         <Footer siteTitle="Make a Diff" />
       </div>
