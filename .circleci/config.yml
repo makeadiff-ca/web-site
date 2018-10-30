@@ -17,8 +17,8 @@ jobs:
             - "c1:03:23:fe:18:de:55:2c:80:49:10:ed:58:73:cb:00"
       - checkout
       - run:
-          name: Push branches to Dokku
-          command: git remote add deploy dokku@138.197.132.181:website && git push deploy
+          name: Push branch to Dokku
+          command: git remote add deploy dokku@138.197.132.181:website && git push deploy $CIRCLE_BRANCH
 workflows:
   version: 2
   build_and_deploy:
