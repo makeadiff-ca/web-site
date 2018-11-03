@@ -1,12 +1,7 @@
 import * as React from 'react'
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { AppState } from '../state'
-import * as ContactState from '../state/contact'
 import ContentArea from '../components/content-area'
 import { mediaMinWidth, palette } from '../styling'
-import ContactForm, { Form } from '../components/contact-form'
 import HeroDiff from '../components/hero-diff'
 import Layout from '../components/layouts'
 import HeroBaseBreaker from '../components/vectors/HeroBaseBreaker'
@@ -15,29 +10,11 @@ interface MainProps {
   className?: string
 }
 
-interface StateProps {
-  interests: ContactState.ContactInterest[]
-  submitState: ContactState.SubmitState
-}
-
-interface DispatchProps {
-  contactSubmit(form: Form): void
-  fetchContactInterests(): void
-}
-
-interface Props extends MainProps, StateProps, DispatchProps {}
+interface Props extends MainProps {}
 
 class IndexPage extends React.PureComponent<Props> {
-  componentDidMount() {
-    this.props.fetchContactInterests()
-  }
-
-  handleFormSubmit = (form: Form) => {
-    this.props.contactSubmit(form)
-  }
-
   render() {
-    const { className, interests, submitState } = this.props
+    const { className } = this.props
 
     return (
       <Layout className={className}>
@@ -56,11 +33,6 @@ class IndexPage extends React.PureComponent<Props> {
                 more of a difference.
               </p>
             </div>
-            <ContactForm
-              interests={interests}
-              onSubmit={this.handleFormSubmit}
-              submitState={submitState}
-            />
           </ContentArea>
         </div>
         <article className="page-body">
@@ -73,38 +45,7 @@ class IndexPage extends React.PureComponent<Props> {
   }
 }
 
-function mapStateToProps(state: AppState): StateProps {
-  return { ...state.contact }
-}
-
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
-  return {
-    contactSubmit(form) {
-      dispatch(
-        ContactState.actions.contactSubmit(
-          form.name,
-          form.email,
-          form.interests,
-        ),
-      )
-    },
-    fetchContactInterests() {
-      dispatch(ContactState.actions.interestsFetch())
-    },
-  }
-}
-
-const ConnectedIndexPage = connect<
-  StateProps,
-  DispatchProps,
-  MainProps,
-  AppState
->(
-  mapStateToProps,
-  mapDispatchToProps,
-)(IndexPage)
-
-export default styled(ConnectedIndexPage)`
+export default styled(IndexPage)`
   > .page-head {
     position: relative;
     background-color: ${palette.base};
@@ -129,12 +70,6 @@ export default styled(ConnectedIndexPage)`
       min-width: 40em;
       transform: translate(-50%, 21%);
     }
-
-    ${ContactForm} {
-      margin: 2rem auto 0 auto;
-      position: relative;
-      max-width: 26em;
-    }
   }
 
   > .page-body {
@@ -154,14 +89,6 @@ export default styled(ConnectedIndexPage)`
       .hero-base-break {
         left: 50%;
         transform: translate(-50%, 30%);
-      }
-
-      ${ContactForm} {
-        margin-top: 0;
-        position: absolute;
-        right: 0;
-        top: 1em;
-        width: 20em;
       }
 
       ${HeroDiff} {
